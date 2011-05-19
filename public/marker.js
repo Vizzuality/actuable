@@ -121,7 +121,7 @@ HomeMarker.prototype.getPosition = function() {
 
 
 HomeMarker.prototype.grow = function(size) {
-  var factor = (size/100.0);
+  var factor = (size/500.0);
  
   $(this.bkg_).animate({
     opacity: 0.1 + factor,
