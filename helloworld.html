@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html> 
 <head> 
-<title>nowjs test</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Actuable live // URGENTE: Exige que autoricen la concentración de Puerta del Sol</title>
+
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script> 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&region=ES&language=ES&libraries=places"></script>
+<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" /> 
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="underscore-min.js"></script>
 <script src="http://ec2-46-51-164-69.eu-west-1.compute.amazonaws.com
 :8080/nowjs/now.js"></script>
+<script src="marker.js"></script>
+
+<script src="http://localhost:8080/nowjs/now.js"></script>
 
 <style type="text/css">
   html { height: 100% }
@@ -16,13 +25,27 @@
 <script>
 $(document).ready(function(){
   var map;
-	
+	var cache = {};
 
   now.receiveLocation = function(loc){
-		var myLatlng = new google.maps.LatLng(Math.random() + loc.latitude, Math.random() + loc.longitude);
-		var marker = new google.maps.Marker({ position: myLatlng, map: map });
+		addToCache(loc);			
   }
   
+	function addToCache(loc){
+		key = parseFloat(loc.latitude).toFixed(4) + "|" + parseFloat(loc.longitude).toFixed(4);
+
+		if (cache[key] == undefined) {
+			cache[key] = loc;
+			cache[key].count = 1;			
+			var myLatlng = new google.maps.LatLng(loc.latitude, loc.longitude);
+			var marker = new HomeMarker(myLatlng,map);
+			cache[key].marker = marker;			
+		} else {
+			cache[key].count += 1;
+			cache[key].marker.grow(cache[key].count);
+		}		
+	}
+	
 
   function initialize() {
     var latlng = new google.maps.LatLng( 40.4,  -3.6833333);
@@ -37,10 +60,38 @@ $(document).ready(function(){
 	initialize();
   
 });
+
+google.maps.Map.prototype.markers = new Array();
+
+google.maps.Map.prototype.addMarker = function(marker) {
+    this.markers[this.markers.length] = marker;
+};
+
+google.maps.Map.prototype.getMarkers = function() {
+    return this.markers
+};
+
+google.maps.Map.prototype.clearMarkers = function() {
+    for(var i=0; i<this.markers.length; i++){
+        this.markers[i].setMap(null);
+    }
+    this.markers = new Array();
+};
+
 </script>
 </head> 
  
 <body> 
 <div id="map_canvas" style="width:100%; height:100%"></div>
+<div id="header">
+   <div>
+     <img class="redDot" src="images/redDot.png" alt="Grabando..."/>
+     <p>Live</p>
+   </div>
+ </div>
+ <div id="footer">
+   <p>Exige que autoricen la concentración de Puerta del Sol. 100.301 personas ya lo han hecho</p>
+   <a href="#">ACTÚA</a>
+ </div>
 </body> 
 </html>

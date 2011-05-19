@@ -4,7 +4,14 @@ var nowjs = require("now");
 var express = require('express');
 var city = new geoip.City(__dirname + '/GeoLiteCity.dat'); 
 var app = express.createServer();
-var redis = 
+app.configure(function(){
+    app.use(express.methodOverride());
+    app.use(express.bodyParser());
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
+});
+
+
 app.get('/data', function(req, res){  
   city.lookup(req.param('ip'), function(err, data) {
       if (err) {console.log("unknown ip: " + req.param('ip'))}
@@ -23,8 +30,6 @@ app.get('/', function(req, res){
     res.send(data)
   });
 });
-
-
 app.listen(8080);
 
 
