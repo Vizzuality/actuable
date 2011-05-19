@@ -14,8 +14,6 @@
 :8080/nowjs/now.js"></script>
 <script src="marker.js"></script>
 
-<script src="http://localhost:8080/nowjs/now.js"></script>
-
 <style type="text/css">
   html { height: 100% }
   body { height: 100%; margin: 0px; padding: 0px }
@@ -50,9 +48,10 @@ $(document).ready(function(){
   function initialize() {
     var latlng = new google.maps.LatLng( 40.4,  -3.6833333);
     var myOptions = {
-      zoom: 7,
+      zoom: 6,
       center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+			disableDefaultUI: true,
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
   }
@@ -91,7 +90,7 @@ google.maps.Map.prototype.clearMarkers = function() {
  </div>
  <div id="footer">
    <p>Exige que autoricen la concentración de Puerta del Sol. 100.301 personas ya lo han hecho</p>
-   <a href="http://actuable.es/peticiones/urgente-exige-autoricen-concentracion-puerta-del-sol">ACTÚA</a>
+   <a href="http://actuable.es/peticiones/urgente-exige-autoricen-concentracion-puerta-del-sol" target="_blank">ACTÚA</a>
  </div>
 </body> 
 </html>
