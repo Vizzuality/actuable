@@ -30,6 +30,15 @@ app.get('/', function(req, res){
     res.send(data)
   });
 });
+
+app.get('/3d', function(req, res){
+  fs.readFile('3d.html', function(err, data){
+    res.contentType('html');  
+    res.send(data)
+  });
+});
+
+
 app.listen(8080);
 
 
